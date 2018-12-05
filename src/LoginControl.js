@@ -4,21 +4,44 @@ import Home from './Home'
 import Login from './Login';
 
 
-function UserGreeting(props) {
-  return <h1>Welcome back! </h1>;
+function NotMatch(props){
+  return <p>Retyped must-match password</p>
 }
 
-function GuestGreeting(props) {
-  return <h1>Please sign up.</h1>;
+function VeryWeakPassword(props){
+  return <p>Very Weak password</p>
 }
 
-function Greeting(props) {
-  const isLogged = props.isLogged;
-  if (isLogged) {
-    return <UserGreeting />;
-  }
-  return <GuestGreeting />;
+function WeakPassword(props){
+  return <p>Weak password</p>
 }
+
+function StrongPassword(props){
+  return <p>Strong password</p>
+}
+
+function ErrorMessage(props) {
+  const errorCode = props.errorCode;
+  
+console.log(errorCode)
+
+  switch(errorCode) {
+    case 1:
+    return <NotMatch/>;
+      break;
+    case 2:
+    return <VeryWeakPassword/>;
+      break;
+      case 3:
+    return <WeakPassword/>;
+      break;
+    case 4:
+    return <StrongPassword/>;
+      break;
+    default:
+    return null;
+  }}
+  
 
 class LoginControl extends Component {
 
@@ -26,13 +49,14 @@ class LoginControl extends Component {
     super(props);
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
-    this.state = { isLogged: false, username: ''};
+    this.state = { isLogged: false, username: '', errorCode : 0};
   }
 
 
   handleLoginClick(username, password, passwordConfirmation) {
     this.setState({ username: username})
     this.passwordMatch(password, passwordConfirmation)
+    console.log(this.state.errorCode)
   }
 
   passwordMatch(password, passwordConfirmation)
@@ -41,14 +65,19 @@ class LoginControl extends Component {
     {
     this.setState({passwordMatch: true})
      this.passwordLength(password)
-     
     } 
+    else{
+      this.setState({errorCode : 1})
+    }
   }
 
   passwordLength(password){
     if(password.length > 6)
     {
       this.passwordUpperCase(password)
+    }
+    else{
+      this.setState({errorCode : 2})
     }
   }
 
@@ -59,6 +88,9 @@ class LoginControl extends Component {
     {
       this.passwordSpaceEntry(password)
     }
+    else{
+      this.setState({errorCode : 2})
+    }
   }
 
   passwordSpaceEntry(password){
@@ -68,6 +100,9 @@ class LoginControl extends Component {
     {
       this.passwordSpecialCharacter(password) 
     }
+    else{
+      this.setState({errorCode : 3})
+    }
   }
 
   passwordSpecialCharacter(password){
@@ -75,6 +110,10 @@ class LoginControl extends Component {
     if(password.search(regex) !== -1)
     {
       this.setState({ isLogged: true })
+      this.setState({errorCode : 4})
+    }
+    else{
+      this.setState({errorCode : 3})
     }
   }
 
@@ -87,7 +126,7 @@ class LoginControl extends Component {
 
     return (
       <div>
-        <Greeting isLogged={isLogged}/>
+       <ErrorMessage errorCode={this.state.errorCode}/>
         <Home isLogged={isLogged} onClick={this.handleLogoutClick} username={this.state.username}/>
         <Login isLogged={isLogged} onClick={this.handleLoginClick} />
       </div>

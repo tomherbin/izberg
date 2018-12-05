@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-
+import './Login.css';
 
 class Login extends Component {
-
-
-  
 
   constructor(props) {
     super(props);
     console.log('created login button');
-    this.state = { username: '', password : '', passwordConfirmation:''};
+    this.state = { username: '', password: '', passwordConfirmation: '' };
   }
+
 
   handleChange = event => {
     const target = event.target;
@@ -20,12 +18,12 @@ class Login extends Component {
     this.setState({
       [name]: value
     });
+    
   }
 
   onSubmit = event => {
-    event.preventDefault()  
+    event.preventDefault()
   }
-
 
 
   render() {
@@ -35,21 +33,21 @@ class Login extends Component {
     }
     return (
       <div>
-        <h1> Join us at Izberg</h1>
+        <h1> Join us at Izberg !</h1>
         <form onSubmit={this.onSubmit}>
 
           <label>
-            Username
+            Username</label>
           <input type="text"
-          name="username"
+              name="username"
               autoComplete="given-name"
               onChange={this.handleChange}
               value={this.state.value} />
-          </label><br />
+          <br />
           <label>
             Password
             </label>
-            <input type="password"
+          <input type="password"
             name="password"
             onChange={this.handleChange}
             value={this.state.value} />
