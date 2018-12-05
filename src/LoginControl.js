@@ -119,6 +119,7 @@ class LoginControl extends Component {
 
   handleLogoutClick() {
     this.setState({ isLogged: false });
+    this.setState({ errorCode: 0 });
     console.log(this.state.islogged);
   }
   render() {
